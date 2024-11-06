@@ -7,5 +7,24 @@
     <input type="text" id="expression" />
     <button onclick="calculate()">Add</button>
     <p id="answer"></p>
+
+    <script>
+        function calculate() {
+            const expression = document.getElementById("expression").value;
+            const answer = document.getElementById("answer");
+        
+        	let values = expression.split(" ").map(value => {
+              	let numText = "";
+                for (let i = 0; i < value.length; i++) {
+            	    let c = value.charAt(i);
+                	if ((c >= '0' && c <= '9') || c === '.') {
+            	        numText += c;
+                  }
+                }
+                return Number(numText);
+            });
+            answer.innerHTML = values.reduce((a, b) => a + b, 0);
+        }
+    </script>
 </body>
 </html>
