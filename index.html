@@ -3,7 +3,7 @@
   <head>
     <title>HTML Tutorial</title>
     <style>
-      div {
+      .container {
         display: flex;
         justify-content: center;
         width: 100%;
@@ -16,18 +16,20 @@
         padding: 6px 8px;
       }
       span {
-        background-color: gray;
+        background-color: #ddd;
         padding: 6px;
       }
     </style>
   </head>
   <body>
-    <div>
-      <input type="text" id="expression" />
-      <br />
-      <br />
-      <button onclick="calculate()">Add</button>
-      <p>Result: <span id="result"></span></p>
+    <div class="container">
+      <div>
+        <input type="text" id="expression" />
+        <br />
+        <br />
+        <button onclick="calculate()">Add</button>
+        <p>Result: <span id="result"></span></p>
+      </div>
     </div>
 
     <script>
