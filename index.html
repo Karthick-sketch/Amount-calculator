@@ -1,30 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>HTML Tutorial</title>
-</head>
-<body>
-    <input type="text" id="expression" />
-    <button onclick="calculate()">Add</button>
-    <p id="answer"></p>
+    <style>
+      div {
+        margin: 0 auto;
+      }
+      input {
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="text" id="expression" />
+      <br />
+      <br />
+      <button onclick="calculate()">Add</button>
+      <p>Result: <span id="result"></span></p>
+    </div>
 
     <script>
-        function calculate() {
-            const expression = document.getElementById("expression").value;
-            const answer = document.getElementById("answer");
-        
-        	let values = expression.split(" ").map(value => {
-              	let numText = "";
-                for (let i = 0; i < value.length; i++) {
-            	    let c = value.charAt(i);
-                	if ((c >= '0' && c <= '9') || c === '.') {
-            	        numText += c;
-                  }
-                }
-                return Number(numText);
-            });
-            answer.innerHTML = values.reduce((a, b) => a + b, 0);
-        }
+      function calculate() {
+        const expression = document.getElementById("expression").value;
+        const result = document.getElementById("result");
+
+        let values = expression.split(" ").map((value) => {
+          let numText = "";
+          for (let i = 0; i < value.length; i++) {
+            let c = value.charAt(i);
+            if ((c >= "0" && c <= "9") || c === ".") {
+              numText += c;
+            }
+          }
+          return Number(numText);
+        });
+        result.innerHTML = values.reduce((a, b) => a + b, 0);
+      }
     </script>
-</body>
+  </body>
 </html>
