@@ -3,11 +3,8 @@
   <head>
     <title>HTML Tutorial</title>
     <style>
-      .container {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+      div {
+        text-align: center;
       }
       input {
         width: 600px;
@@ -16,20 +13,14 @@
       button {
         padding: 6px 8px;
       }
-      span {
-        background-color: #ddd;
-        padding: 6px;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <div>
         <input type="text" id="expression" />
-        <br />
-        <br />
         <button onclick="calculate()">Add</button>
-        <p>Result: <span id="result"></span></p>
+        <p>Result: <span id="result">0</span></p>
       </div>
     </div>
 
