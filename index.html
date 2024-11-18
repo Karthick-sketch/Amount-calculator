@@ -19,16 +19,20 @@
     <div class="container">
       <div>
         <input type="text" id="expression" />
-        <button onclick="calculate()">Add</button>
-        <p>Result: <span id="result">0</span></p>
+        <button onclick="clearExpression()">Clear</button>
+        <button style="margin-left: 16px" onclick="calculator()">Add</button>
+        <p>Total: <span id="result">0</span></p>
       </div>
     </div>
+    <script type="text/javascript" charset="utf-8">
+      function clearExpression() {
+        document.getElementById("expression").value = '';
+      }
 
-    <script>
       function calculate() {
         const expression = document.getElementById("expression").value;
         const result = document.getElementById("result");
-
+      
         let values = expression.split(" ").map((value) => {
           let numText = "";
           for (let i = 0; i < value.length; i++) {
