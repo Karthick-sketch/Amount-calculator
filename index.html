@@ -13,37 +13,41 @@
       button {
         padding: 6px 8px;
       }
+      #result {
+        padding: 2px 6px;
+        background-color: buttonface;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div>
-        <input type="text" id="expression" />
-        <button onclick="clearExpression()">Clear</button>
-        <button style="margin-left: 16px" onclick="calculate()">Add</button>
-        <p>Total: <span id="result">0</span></p>
-      </div>
+    <div>
+      <input type="text" id="expression" />
+      <button onclick="clearExpression()">Clear</button>
+      <button style="margin-left: 16px" onclick="calculate()">Add</button>
+      <p>Total: <span id="result">0</span></p>
     </div>
+
     <script type="text/javascript" charset="utf-8">
       function clearExpression() {
         document.getElementById("expression").value = '';
+        document.getElementById("result").innerHTML = '0';
       }
 
       function calculate() {
         const expression = document.getElementById("expression").value;
         const result = document.getElementById("result");
-      
-        let values = expression.split(" ").map((value) => {
+
+        const values = expression.split(" ").map((value) => {
           let numText = "";
-          for (let i = 0; i < value.length; i++) {
-            let c = value.charAt(i);
-            if ((c >= "0" && c <= "9") || c === ".") {
-              numText += c;
+          for (let v of value) {
+            if ((v >= "0" && v <= "9") || v === ".") {
+              numText += v;
             }
           }
           return Number(numText);
         });
-        result.innerHTML = values.reduce((a, b) => a + b, 0);
+        result.innerHTML = values.reduce((a, b) => a + b, 0).toFixed(2);
       }
     </script>
   </body>
