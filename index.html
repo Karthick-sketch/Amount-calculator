@@ -1,54 +1,105 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+
+<head>
     <title>Amount calculator</title>
     <style>
-      div {
-        text-align: center;
-      }
-      input {
-        width: 600px;
-        padding: 6px;
-      }
-      button {
-        padding: 6px 8px;
-      }
-      #result {
-        padding: 2px 6px;
-        background-color: buttonface;
-        border-radius: 4px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container div {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+
+        .container div:first-child {
+            margin-bottom: 4em;
+        }
+
+        label {
+            float: left;
+            margin-bottom: 4px;
+        }
+
+        input {
+            width: 400px;
+            padding: 6px;
+        }
+
+        button {
+            padding: 6px 8px;
+        }
+
+        span {
+            padding: 2px 6px;
+            background-color: buttonface;
+            border-radius: 4px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
+<div class="container">
     <div>
-      <input type="text" id="expression" />
-      <button onclick="clearExpression()">Clear</button>
-      <button style="margin-left: 16px" onclick="calculate()">Add</button>
-      <p>Total: <span id="result">0</span></p>
+        <label>Add Amount</label>
+        <input type="search" oninput="calculateAmount(event)" />
+        <p>Total: <span id="amount-result">0.00</span></p>
     </div>
+    <div>
+        <label>Amount calculator</label>
+        <input type="search" oninput="calculateExpression(event)" />
+        <p>Result: <span id="expression-result">0.00</span></p>
+    </div>
+</div>
 
-    <script type="text/javascript" charset="utf-8">
-      function clearExpression() {
-        document.getElementById("expression").value = '';
-        document.getElementById("result").innerHTML = '0';
-      }
+<script type="text/javascript" charset="utf-8">
+    const symbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", "(", ")"]
 
-      function calculate() {
-        const expression = document.getElementById("expression").value;
-        const result = document.getElementById("result");
-
-        const values = expression.split(" ").map((value) => {
-          let numText = "";
-          for (let v of value) {
-            if ((v >= "0" && v <= "9") || v === ".") {
-              numText += v;
+    function calculateAmount(event) {
+        const values = event.target.value.split(" ").map((value) => {
+            let numText = "";
+            for (let v of value) {
+                if ((v >= "0" && v <= "9") || v === ".") {
+                    numText += v;
+                }
             }
-          }
-          return Number(numText);
+            return Number(numText);
         });
-        result.innerHTML = values.reduce((a, b) => a + b, 0).toFixed(2);
-      }
-    </script>
-  </body>
+        document.getElementById("amount-result").innerHTML = values.reduce((a, b) => a + b, 0).toFixed(2);
+    }
+
+    function calculateExpression(event) {
+        const result = document.getElementById("expression-result");
+        let expression = "";
+        for (let v of event.target.value) {
+            if (symbols.includes(v)) {
+                expression += v;
+            }
+        }
+        try {
+            const answer = eval(expression);
+            if (answer === null || answer === undefined) {
+                throw "invalid";
+            }
+            result.innerHTML = answer.toFixed(2);
+        } catch (e) {
+            result.innerHTML = "0.00";
+        }
+    }
+</script>
+</body>
+
 </html>
