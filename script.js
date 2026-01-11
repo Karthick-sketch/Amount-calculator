@@ -54,5 +54,9 @@ function calculateExpression(event) {
 
 function capitalize(event) {
   let text = event.target.value.toLowerCase();
+  text = text
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
   document.getElementById("capitalize-result").innerText = text;
 }

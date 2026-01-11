@@ -46,7 +46,3 @@ span {
   background-color: buttonface;
   border-radius: 4px;
 }
-
-#capitalize-result {
-  text-transform: capitalize;
-}
