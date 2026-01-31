@@ -7,20 +7,20 @@
 
   <body>
     <div class="container">
-      <div>
+      <div id="add-amount">
         <label>Add Amount</label>
         <input type="search" oninput="calculateAmount(event)" />
         <p>Total: <span id="amount-result">0.00</span></p>
       </div>
-      <div>
-        <label>Amount calculator</label>
+      <div id="amount-calculator">
+        <label>Amount Calculator</label>
         <input type="search" oninput="calculateExpression(event)" />
         <p>Result: <span id="expression-result">0.00</span></p>
       </div>
-      <div>
-        <label>Capitalize</label>
+      <div id="capitalize-text">
+        <label>Capitalize Text</label>
         <input type="search" oninput="capitalize(event)" />
-        <p>Result: <span id="capitalize-result"></span></p>
+        <p><span id="capitalize-result"></span></p>
       </div>
     </div>
     <script src="script.js"></script>
