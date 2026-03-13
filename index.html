@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Amount calculator</title>
@@ -7,20 +7,58 @@
 
   <body>
     <div class="container">
-      <div id="add-amount">
-        <label>Add Amount</label>
-        <input type="search" oninput="calculateAmount(event)" />
-        <p>Total: <span id="amount-result">0.00</span></p>
+      <div class="left-container">
+        <div id="add-amount">
+          <label>Add Amount</label>
+          <input type="search" oninput="calculateAmount(event)" />
+          <p>Total: <span id="amount-result">0.00</span></p>
+        </div>
+        <div id="amount-calculator">
+          <label>Amount Calculator</label>
+          <input type="search" oninput="calculateExpression(event)" />
+          <p>Result: <span id="expression-result">0.00</span></p>
+        </div>
+        <div id="capitalize-text">
+          <label>Capitalize Text</label>
+          <input type="search" oninput="capitalize(event)" />
+          <p><span id="capitalize-result"></span></p>
+        </div>
       </div>
-      <div id="amount-calculator">
-        <label>Amount Calculator</label>
-        <input type="search" oninput="calculateExpression(event)" />
-        <p>Result: <span id="expression-result">0.00</span></p>
-      </div>
-      <div id="capitalize-text">
-        <label>Capitalize Text</label>
-        <input type="search" oninput="capitalize(event)" />
-        <p><span id="capitalize-result"></span></p>
+      <div class="right-container">
+        <div id="date-duration-calculator">
+          <p class="container-name">Date Duration Calculator</p>
+          <p class="input-name">Start date</p>
+          <input type="date" id="start-date" onchange="calculateDuration()" />
+          <p class="input-name">End date</p>
+          <input type="date" id="end-date" onchange="calculateDuration()" />
+          <p>
+            <span id="duration-result1">0 years, 0 months, and 0 days</span>
+          </p>
+          <p>
+            <span id="duration-result2">0 months and 0 days</span>
+          </p>
+          <p>
+            <span id="duration-result3">0 days</span>
+          </p>
+        </div>
+        <div id="prior-date-calculator">
+          <p class="container-name">Renewal Deadline Calculator</p>
+          <p class="input-name">End date</p>
+          <input
+            type="date"
+            id="end-date-prior"
+            oninput="calculatePriorDate()"
+          />
+          <p class="input-name">Renewal notice (days)</p>
+          <input
+            type="number"
+            id="renewal-notice"
+            oninput="calculatePriorDate()"
+          />
+          <p>
+            <span id="prior-date-result"></span>
+          </p>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>
