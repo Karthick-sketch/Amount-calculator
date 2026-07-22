@@ -92,20 +92,17 @@ function parseDate(text) {
   if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
 
   // 2. Two numbers + 4-digit year: MM/DD/YYYY vs DD/MM/YYYY
-  //    - If the second number > 12 → it must be a day, so first is month (MM/DD/YYYY).
-  //    - If the first number > 12  → it must be a day, so second is month (DD/MM/YYYY).
-  //    - If both ≤ 12 (ambiguous)  → default to MM/DD/YYYY (US convention).
+  //    - If the first number > 12 it can only be a day → DD/MM/YYYY
+  //    - Otherwise (second > 12 or both ≤ 12) → default MM/DD/YYYY (US convention)
   m = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
   if (m) {
     const a = +m[1],
       b = +m[2],
       yr = +m[3];
     if (a > 12) {
-      // a can only be day → DD/MM/YYYY
-      return new Date(yr, b - 1, a);
+      return new Date(yr, b - 1, a); // DD/MM/YYYY
     } else {
-      // b > 12 OR ambiguous → treat as MM/DD/YYYY
-      return new Date(yr, a - 1, b);
+      return new Date(yr, a - 1, b); // MM/DD/YYYY
     }
   }
 
@@ -141,12 +138,15 @@ function calculateDuration() {
   markValidity(startEl, startEl.value, start);
   markValidity(endEl, endEl.value, end);
 
+  const reset = () => {
+    document.getElementById("duration-years").textContent = "0";
+    document.getElementById("duration-months").textContent = "0";
+    document.getElementById("duration-weeks").textContent = "0";
+    document.getElementById("duration-days").textContent = "0";
+  };
+
   if (!start || !end) {
-    document.getElementById("duration-result1").innerHTML =
-      "0 years, 0 months, and 0 days";
-    document.getElementById("duration-result2").innerHTML =
-      "0 months and 0 days";
-    document.getElementById("duration-result3").innerHTML = "0 days";
+    reset();
     return;
   }
 
@@ -155,27 +155,27 @@ function calculateDuration() {
   // subscription logic: add 1 day to end
   end.setDate(end.getDate() + 1);
 
+  const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+
+  // Years: full calendar years elapsed
   let years = end.getFullYear() - start.getFullYear();
   let months = end.getMonth() - start.getMonth();
-  let days = end.getDate() - start.getDate();
-
-  if (days < 0) {
-    months--;
-    days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-  }
   if (months < 0) {
     years--;
     months += 12;
   }
 
+  // Total whole months
   const totalMonths = years * 12 + months;
-  const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
 
-  document.getElementById("duration-result1").innerHTML =
-    `${years} years, ${months} months, and ${days} days`;
-  document.getElementById("duration-result2").innerHTML =
-    `${totalMonths} months and ${days} days`;
-  document.getElementById("duration-result3").innerHTML = `${totalDays} days`;
+  // Total whole weeks
+  const totalWeeks = Math.floor(totalDays / 7);
+
+  document.getElementById("duration-years").textContent = years + " Years";
+  document.getElementById("duration-months").textContent =
+    totalMonths + " Months";
+  document.getElementById("duration-weeks").textContent = totalWeeks + " Weeks";
+  document.getElementById("duration-days").textContent = totalDays + " Days";
 }
 
 function calculatePriorDate() {
