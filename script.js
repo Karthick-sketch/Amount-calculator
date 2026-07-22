@@ -62,7 +62,8 @@ function capitalize(event) {
 /**
  * Parses a date from free text. Supports:
  *   YYYY-MM-DD / YYYY/MM/DD        → "2026-06-15", "2026/06/15"
- *   DD-MM-YYYY / DD/MM/YYYY        → "15-06-2026", "15/06/2026"
+ *   MM/DD/YYYY or MM-DD-YYYY       → "7/24/2026", "07-24-2026"
+ *   DD/MM/YYYY                     → "24/07/2026" (only when day part > 12, unambiguous)
  *   DD MMM YYYY / MMM DD YYYY      → "15 Jun 2026", "Jun 15 2026"
  *   Month DD, YYYY                 → "June 15, 2026"
  * Returns a Date (local midnight) or null if unparseable.
@@ -86,13 +87,27 @@ function parseDate(text) {
     dec: 11,
   };
 
-  // 1. YYYY-MM-DD or YYYY/MM/DD
+  // 1. YYYY-MM-DD or YYYY/MM/DD  (4-digit year first — unambiguous)
   let m = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
   if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
 
-  // 2. DD-MM-YYYY or DD/MM/YYYY
+  // 2. Two numbers + 4-digit year: MM/DD/YYYY vs DD/MM/YYYY
+  //    - If the second number > 12 → it must be a day, so first is month (MM/DD/YYYY).
+  //    - If the first number > 12  → it must be a day, so second is month (DD/MM/YYYY).
+  //    - If both ≤ 12 (ambiguous)  → default to MM/DD/YYYY (US convention).
   m = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
-  if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+  if (m) {
+    const a = +m[1],
+      b = +m[2],
+      yr = +m[3];
+    if (a > 12) {
+      // a can only be day → DD/MM/YYYY
+      return new Date(yr, b - 1, a);
+    } else {
+      // b > 12 OR ambiguous → treat as MM/DD/YYYY
+      return new Date(yr, a - 1, b);
+    }
+  }
 
   // 3. DD MMM YYYY  (e.g. "15 Jun 2026")
   m = raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
@@ -111,7 +126,7 @@ function parseDate(text) {
   return null;
 }
 
-/** Sets a red border on an input if text was entered but couldn't be parsed. */
+/** Sets a red outline on an input if text was entered but couldn't be parsed. */
 function markValidity(el, text, date) {
   el.style.outline = text && !date ? "2px solid #e74c3c" : "";
 }
