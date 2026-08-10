@@ -138,15 +138,14 @@ function calculateDuration() {
   markValidity(startEl, startEl.value, start);
   markValidity(endEl, endEl.value, end);
 
-  const reset = () => {
-    document.getElementById("duration-years").textContent = "0";
-    document.getElementById("duration-months").textContent = "0";
-    document.getElementById("duration-weeks").textContent = "0";
-    document.getElementById("duration-days").textContent = "0";
-  };
-
   if (!start || !end) {
-    reset();
+    document.getElementById("duration-result1").innerHTML =
+      "0 years, 0 months, and 0 days";
+    document.getElementById("duration-result2").innerHTML =
+      "0 months and 0 days";
+    document.getElementById("duration-result3").innerHTML =
+      "0 weeks and 0 days";
+    document.getElementById("duration-result4").innerHTML = "0 days";
     return;
   }
 
@@ -155,27 +154,31 @@ function calculateDuration() {
   // subscription logic: add 1 day to end
   end.setDate(end.getDate() + 1);
 
-  const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
-
-  // Years: full calendar years elapsed
   let years = end.getFullYear() - start.getFullYear();
   let months = end.getMonth() - start.getMonth();
+  let days = end.getDate() - start.getDate();
+
+  if (days < 0) {
+    months--;
+    days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+  }
   if (months < 0) {
     years--;
     months += 12;
   }
 
-  // Total whole months
   const totalMonths = years * 12 + months;
-
-  // Total whole weeks
+  const totalDays = Math.floor((end - start) / (1000 * 60 * 60 * 24));
   const totalWeeks = Math.floor(totalDays / 7);
+  const remDays = totalDays % 7;
 
-  document.getElementById("duration-years").textContent = years + " Years";
-  document.getElementById("duration-months").textContent =
-    totalMonths + " Months";
-  document.getElementById("duration-weeks").textContent = totalWeeks + " Weeks";
-  document.getElementById("duration-days").textContent = totalDays + " Days";
+  document.getElementById("duration-result1").innerHTML =
+    `${years} years, ${months} months, and ${days} days`;
+  document.getElementById("duration-result2").innerHTML =
+    `${totalMonths} months and ${days} days`;
+  document.getElementById("duration-result3").innerHTML =
+    `${totalWeeks} weeks and ${remDays} days`;
+  document.getElementById("duration-result4").innerHTML = `${totalDays} days`;
 }
 
 function calculatePriorDate() {
